@@ -79,15 +79,11 @@ jobs:
             # Write combined result to file
             with open('combined_aaguid.json', 'w') as output_file:
               json.dump(result, output_file)
-      - name: Commit files
+      - name: Commit files and push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           timestamp=$(date -u)
           git commit -m "bot: Updated ${timestamp}, ${{ env.COMMIT_MSG }}" -a || exit 0
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          git push
