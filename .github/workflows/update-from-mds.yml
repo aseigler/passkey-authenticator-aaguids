@@ -46,11 +46,11 @@ jobs:
             mds_data = json.loads(mds_strings)
             mds_number = mds_data['no']
             mds_next = mds_data['nextUpdate']
-            commit_msg = f'MDS file version {mds_number}, next update expected {mds_next}.'
+            commit_msg = f'COMMIT_MSG=MDS file version {mds_number}, next update expected {mds_next}.'
 
             env_file = os.getenv('GITHUB_ENV')
             with open(env_file, "a") as myfile:
-              myfile.write("COMMIT_MSG=$commit_msg")
+              myfile.write("$commit_msg")
               
             # Extract FIDO2 statements with non-null aaguid and required properties
             fido2_statements = [
