@@ -48,7 +48,7 @@ jobs:
             # Build commit msg and export to environment variable
             mds_number = mds_data['no']
             mds_next = mds_data['nextUpdate']
-            commit_msg=f'COMMIT_MSG=Update from MDS file version {mds_number}, next update expected {mds_next}.'
+            commit_msg=f'COMMIT_MSG=from MDS file version {mds_number}, next update expected {mds_next}.'
             env_file = os.getenv('GITHUB_ENV')
             with open(env_file, "a") as myfile:
               myfile.write(commit_msg)
@@ -79,12 +79,15 @@ jobs:
             # Write combined result to file
             with open('combined_aaguid.json', 'w') as output_file:
               json.dump(result, output_file)
+      - name: Get changes
+        run: git diff --name-only -r HEAD^1 HEAD
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "bot: ${{ env.COMMIT_MSG }}" -a
+          timestamp=$(date -u)
+          git commit -m "bot: Updated ${timestamp}, ${{ env.COMMIT_MSG }}" -a || exit 0
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
