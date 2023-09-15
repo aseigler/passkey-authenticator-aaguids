@@ -79,8 +79,6 @@ jobs:
             # Write combined result to file
             with open('combined_aaguid.json', 'w') as output_file:
               json.dump(result, output_file)
-      - name: Get changes
-        run: git diff --name-only -r HEAD^1 HEAD
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
